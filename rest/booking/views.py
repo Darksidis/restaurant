@@ -3,7 +3,10 @@ from .models import Table, Client
 from .forms import EmailPostForm
 from django.http import HttpRequest
 from .tasks import send_info
+from .regular_mail_delivery import regular_send
 from django.template.loader import render_to_string
+from django.conf import settings
+
 
 def post_list(request: HttpRequest):
     """
@@ -76,6 +79,24 @@ def table_reservation(request, number):
             # Если форма валидна, мы идём дальше
             cd = form.cleaned_data
 
+            html_message = render_to_string(
+                'booking/email/mail_template.html',
+                {
+                    'table': table,
+                },
+                request=request,
+            )
+            # Если в настройках указано, что должжен быть включен celery, вызывается асинхронная задача
+            if settings.STATUS_CELERY == True:
+                print ('сюда вышло!')
+                # вызываем асинхронную задачу
+                send_info.delay(html_message, cd['email'])
+            else:
+                regular_send(html_message, cd['email'])
+
+            sent = True
+
+
             # в этом разделе обновляем базу
             client = Client.objects.filter(
                 name=cd['name'],
@@ -94,18 +115,6 @@ def table_reservation(request, number):
             table.status_booking = client.get()
             table.status_published = 'draft'
             table.save()
-
-            # вызываем асинхронную задачу
-            html_message = render_to_string(
-                'booking/email/mail_template.html',
-                {
-                    'table': table,
-                },
-                request=request,
-            )
-            send_info.delay(html_message, cd['email'])
-
-            sent = True
     else:
         form = EmailPostForm()
     return render(request, 'booking/post/share.html', {'table': table, 'form': form, 'sent': sent})
