@@ -27,6 +27,6 @@ python -m pipenv install
 
 ## Compiles 
 ```
-pipenv shell
+python -m pipenv shell
 python manage.py runserver
 ```
