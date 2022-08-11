@@ -6,7 +6,7 @@ pip install pipenv
 python -m pipenv install
 ```
 
-## Compiles and hot-reloads for development
+## Compiles 
 ```
 pipenv shell
 python manage.py runserver
