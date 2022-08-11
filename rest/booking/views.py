@@ -88,7 +88,6 @@ def table_reservation(request, number):
             )
             # Если в настройках указано, что должжен быть включен celery, вызывается асинхронная задача
             if settings.STATUS_CELERY == True:
-                print ('сюда вышло!')
                 # вызываем асинхронную задачу
                 send_info.delay(html_message, cd['email'])
             else:
