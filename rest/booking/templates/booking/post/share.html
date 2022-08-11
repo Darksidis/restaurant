@@ -1,0 +1,13 @@
+
+{% block content %}
+
+{% if sent %}
+    <h1>Вы успешно забронировали столик</h1>
+    <p>Данные о бронирований отправлены по адресу {{ form.cleaned_data.email }}.</p>
+{% else %}
+    <h1>Бронирование столика под номером {{ table.number}}</h1>
+    <form action="." method="post">      {{ form.as_p }} {% csrf_token %} <input type="submit" value="Send e-mail">
+    </form>
+{% endif %}
+
+{% endblock %}

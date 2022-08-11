@@ -1,0 +1,53 @@
+{% extends "booking/base.html" %} {% block title %}My Blog{% endblock %}
+{% block content %}
+
+{% load static %}
+<html>
+
+<script type="text/javascript">
+
+   function submitForm() {
+       console.log ('ааа')
+    var selectBox = document.getElementById("input_type_table");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    console.log (selectedValue)
+    selectBox.value = selectedValue;
+    document.forms["myform"].submit();
+   }
+</script>
+
+<h1>Столики для бронирования</h1>
+<form id="myform" action="#" method="POST">
+    {% csrf_token %}
+    <label for="input_type_table">Тип столика:</label>
+
+    <select value = '' id="input_type_table" onchange ='submitForm();' name = 'type_table'  >
+        {% for type in types %}
+
+        <option value="{{ type }}">{{ type }}</option>
+
+
+        {% endfor %}
+
+    </select>
+
+    <label for="input_amount">Количество мест:</label>
+      <input value ="{{ seats_table }}" type="number" id="input_amount" name="seats_table" min="{{ seats.0 }}" max="{{ seats.1 }}" >
+   <label for="input_amount">Стоимость:</label>
+    <input value = '{{ value_range_price }}' id='input_price' name = 'prices_table' type="range" min="0" max="{{ prices }}" onchange ='submitForm();'  >
+       <label for="input_amount">{{ value_range_price }}</label>
+
+
+</form>
+{% for table in tables %}
+<h2>
+    <a href="{{ table.get_absolute_url }}"> Номер столика: {{ table.number }} </a>
+</h2>
+<p class="date">Вид: {{ table.type }}, количество стульев: {{ table.seats }}</p>
+<p> <a href="{% url "booking:table_reservation" table.number %}">Забронировать</a> </p>
+{{ table.body|truncatewords:30|linebreaks }}
+
+
+{% endfor %}
+{% endblock %}
+</html>

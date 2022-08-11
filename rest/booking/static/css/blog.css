@@ -1,0 +1,7 @@
+#b1, #ul1 {
+  display: none;
+}
+
+#b1:checked + #ul1 {
+  display: inherit;
+}

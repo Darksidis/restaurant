@@ -1,0 +1,20 @@
+
+{% load static %}
+{% block content %}
+
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="static/css/blog.css">
+
+<title>Вы забронировали столик</title>
+    <h1>Вы забронировали столик под номером {{ table.number}}. Вид: {{ table.type }}, количество стульев: {{ table.seats }} </h1>
+        <p> Если вы хотите отменить бронирование, то нажмите кнопку ниже {{ url }} </p>
+
+
+<form action="{{ default_domain }}{% url "booking:cancel_booking" table.number %}"  method="get">
+{% csrf_token %}
+<button type='submit'>Отменить бронирование</button>
+</form>
+
+
+{% endblock %}
