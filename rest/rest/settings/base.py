@@ -122,7 +122,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-EMAIL_HOST = email_host # Использовал SMTP-сервер от Yandex, за подробностями в гугл
+EMAIL_HOST = email_host # Использовал SMTP-сервер от Yandex, за подробностями сюда https://yandex.ru/support/mail/mail-clients/others.html
 EMAIL_HOST_USER = email_host_user
 EMAIL_HOST_PASSWORD = email_host_password
 EMAIL_PORT = email_port
